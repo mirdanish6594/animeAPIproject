@@ -40,9 +40,9 @@ This project utilizes the Jikan API to fetch anime information. Jikan is an open
 ### Contributing
 If you'd like to contribute to this project, please follow these steps:
 1. Fork the repository.
-2. Create a new branch: ```bash git checkout -b feature/new-feature. ```
-3. Make your changes and commit them: ```bash git commit -m 'Add new feature'. ```
-4. Push to the branch: ```bash git push origin feature/new-feature. ```
+2. Create a new branch: ``` git checkout -b feature/new-feature. ```
+3. Make your changes and commit them: ``` git commit -m 'Add new feature'. ```
+4. Push to the branch: ``` git push origin feature/new-feature. ```
 5. Submit a pull request.
 
 
