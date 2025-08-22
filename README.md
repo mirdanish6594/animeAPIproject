@@ -10,7 +10,7 @@ https://anime-api-ten-beta.vercel.app/
 
 ### 📸 Screenshots
 
-*Homepage showing top airing anime.*
+![Details Page](./assets/homepage.png)
 
 
 ![Details Page](./assets/details-page.png)
