@@ -1,69 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anime Search</title>
-  <!-- Google Fonts-->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Exo+2&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Search</title>
+    <style>
+        /* Basic styling for demonstration */
+        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
+        h1 { text-align: center; }
+        form { display: flex; justify-content: center; margin-bottom: 30px; }
+        input[type="text"] { width: 300px; padding: 10px; border-radius: 5px 0 0 5px; border: 1px solid #ccc; }
+        button { padding: 10px; border: 1px solid #007bff; background-color: #007bff; color: white; border-radius: 0 5px 5px 0; cursor: pointer; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .anime-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; padding: 10px; }
+        .anime-card img { max-width: 100%; border-radius: 5px; }
+        .message { text-align: center; font-size: 1.2em; color: #555; }
+    </style>
 </head>
-<body class="search-results">
-
-  <div class="container my-4">
-    <h1 class="text-center head-anime"><strong>Anime Search</strong></h1>
-    <form action="/search" method="GET" class="text-center my-4">
-      <label for="searchInput" class="visually-hidden">Search for Anime:</label>
-      <div class="input-group">
-        <input type="text" id="searchInput" name="q" class="form-control" placeholder="Name of Anime" required>
-        <button type="submit" class="btn btn-primary">Search</button>
-      </div>
+<body>
+    <h1>Search for Anime</h1>
+    <form action="/" method="GET">
+        <input type="text" name="q" placeholder="e.g., Attack on Titan" value="<%= query %>" required>
+        <button type="submit">Search</button>
     </form>
-    <div class="main-text">
-        <% if (!locals.animeData) { %>
-            <h1 class="main-heading">Get Information About Any Anime</h1>
-            <div class="para-class">
-                <p class="subheading">Explore details, ratings, and more for your favorite anime series. Simply enter the name of the anime you're interested in, and discover a world of information.</p>
+
+    <% if (locals.error) { %>
+        <p class="message" style="color: red;"><%= error %></p>
+    <% } %>
+
+    <div class="results-container">
+        <% if (animeData.length > 0) { %>
+            <div class="results-grid">
+                <% animeData.forEach(anime => { %>
+                    <div class="anime-card">
+                        <img src="<%= anime.images.jpg.image_url %>" alt="<%= anime.title %>">
+                        <h3><%= anime.title %></h3>
+                        <p>Score: <%= anime.score || 'N/A' %></p>
+                    </div>
+                <% }) %>
             </div>
+        <% } else if (query) { %>
+            <p class="message">No results found for "<%= query %>". Please try another search.</p>
+        <% } else { %>
+            <p class="message">Enter an anime name above to get started!</p>
         <% } %>
     </div>
-
-    <% if (locals.animeData) { %>
-      <h3 class="text-center mb-4">Search Results...</h3>
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <% locals.animeData.forEach(anime => { %>
-          <div class="col">
-            <div class="card h-100">
-              <img src="<%= anime.images.jpg.image_url %>" class="card-img-top" alt="<%= anime.title %>">
-              <div class="card-body">
-                <h5 class="card-title"><%= anime.title %></h5>
-                <p class="card-text"><strong>Type:</strong> <%= anime.type %></p>
-                <p class="card-text"><strong>Episodes:</strong> <%= anime.episodes %></p>
-                <p class="card-text"><strong>Status:</strong> <%= anime.status %></p>
-                <p class="card-text"><strong>Synopsis:</strong> <%= anime.synopsis %></p>
-                <p class="card-text"><strong>Rating:</strong> <%= anime.rating %></p>
-                <p class="card-text"><strong>Score:</strong> <%= anime.score %></p>
-              </div>
-            </div>
-          </div>
-        <% }); %>
-      </div>
-    <% } %>
-
-  </div>
-
-  <!-- Bootstrap  -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Check if animeData is available and add class accordingly
-    <% if (locals.animeData) { %>
-        document.body.classList.add('search-results-background');
-    <% } %>
-  </script>
 </body>
 </html>
