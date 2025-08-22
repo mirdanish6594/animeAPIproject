@@ -13,7 +13,7 @@ https://anime-api-ten-beta.vercel.app/
 *Homepage showing top airing anime.*
 
 
-*Details page for a specific anime, showing its synopsis and trailer.*
+![Details Page](./assets/details-page.png)
 
 
 ---
