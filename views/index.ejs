@@ -3,47 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Search</title>
+    <title>Anime Universe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Basic styling for demonstration */
-        body { font-family: sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
-        h1 { text-align: center; }
-        form { display: flex; justify-content: center; margin-bottom: 30px; }
-        input[type="text"] { width: 300px; padding: 10px; border-radius: 5px 0 0 5px; border: 1px solid #ccc; }
-        button { padding: 10px; border: 1px solid #007bff; background-color: #007bff; color: white; border-radius: 0 5px 5px 0; cursor: pointer; }
-        .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .anime-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; padding: 10px; }
-        .anime-card img { max-width: 100%; border-radius: 5px; }
-        .message { text-align: center; font-size: 1.2em; color: #555; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: auto; }
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { font-size: 3rem; color: #ffffff; margin-bottom: 0.5rem; }
+        .header p { font-size: 1.1rem; color: #c0c0c0; }
+        form { display: flex; justify-content: center; margin-bottom: 3rem; }
+        input[type="text"] {
+            width: 50%;
+            max-width: 500px;
+            padding: 1rem;
+            border-radius: 30px;
+            border: none;
+            background: #16213e;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus { box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
+        .page-title { font-size: 1.8rem; margin-bottom: 1.5rem; color: #e0e0e0; border-left: 4px solid #00aaff; padding-left: 1rem;}
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .anime-card {
+            background: #16213e;
+            border-radius: 8px;
+            overflow: hidden;
+            text-decoration: none;
+            color: #e0e0e0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .anime-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 170, 255, 0.3);
+        }
+        .anime-card img { width: 100%; height: 320px; object-fit: cover; }
+        .card-content { padding: 1rem; }
+        .card-content h3 { font-size: 1.1rem; margin: 0 0 0.5rem 0; }
+        .card-content p { margin: 0; color: #00aaff; font-weight: 600; }
+        .message { text-align: center; font-size: 1.2rem; padding: 3rem; }
     </style>
 </head>
 <body>
-    <h1>Search for Anime</h1>
-    <form action="/" method="GET">
-        <input type="text" name="q" placeholder="e.g., Attack on Titan" value="<%= query %>" required>
-        <button type="submit">Search</button>
-    </form>
+    <div class="container">
+        <div class="header">
+            <h1>Anime Universe</h1>
+            <p>Your gateway to exploring the world of anime</p>
+        </div>
 
-    <% if (locals.error) { %>
-        <p class="message" style="color: red;"><%= error %></p>
-    <% } %>
+        <form action="/" method="GET">
+            <input type="text" name="q" placeholder="Search for an anime..." value="<%= query %>">
+        </form>
 
-    <div class="results-container">
-        <% if (animeData.length > 0) { %>
-            <div class="results-grid">
-                <% animeData.forEach(anime => { %>
-                    <div class="anime-card">
-                        <img src="<%= anime.images.jpg.image_url %>" alt="<%= anime.title %>">
-                        <h3><%= anime.title %></h3>
-                        <p>Score: <%= anime.score || 'N/A' %></p>
-                    </div>
-                <% }) %>
-            </div>
-        <% } else if (query) { %>
-            <p class="message">No results found for "<%= query %>". Please try another search.</p>
-        <% } else { %>
-            <p class="message">Enter an anime name above to get started!</p>
+        <% if (locals.error) { %>
+            <p class="message" style="color: red;"><%= error %></p>
         <% } %>
+
+        <h2 class="page-title"><%= pageTitle %></h2>
+        <div class="results-container">
+            <% if (animeData.length > 0) { %>
+                <div class="results-grid">
+                    <% animeData.forEach(anime => { %>
+                        <a href="/anime/<%= anime.mal_id %>" class="anime-card">
+                            <img src="<%= anime.images.jpg.large_image_url %>" alt="<%= anime.title %>">
+                            <div class="card-content">
+                                <h3><%= anime.title %></h3>
+                                <p>⭐ <%= anime.score || 'N/A' %></p>
+                            </div>
+                        </a>
+                    <% }) %>
+                </div>
+            <% } else if (query) { %>
+                <p class="message">No results found for "<%= query %>".</p>
+            <% } %>
+        </div>
     </div>
 </body>
 </html>
